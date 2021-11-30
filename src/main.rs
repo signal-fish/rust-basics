@@ -1,3 +1,5 @@
+use std::collections::{HashMap,HashSet};
+
 fn main() {
     // declare a variable
     println!("===============================");
@@ -188,6 +190,102 @@ fn main() {
         }
     }
     println!("===============================");
+
+    // modules
+    /*
+    pub mod movies {
+        pub mod english {
+            pub mod comedy {
+                pub fn play(name:String) {
+                    println!("{}", name);
+                }
+            }
+        }
+    }
+    use movies::english::comedy
+    fn main() {
+        comedy::play("Signal");
+    }
+    */
+
+    // Vector
+    let mut v = vec![];  // Vec::new()
+    v.push(11);
+    v.push(22);
+    v.push(33);
+    if v.contains(&11) {
+        println!("found 11");
+    }
+    v.remove(1);
+    println!("v = {:?}, length of v = {}", v, v.len());
+    println!("===============================");
+
+    // Hashmap
+    println!("HashMap......");
+    let mut state_codes = HashMap::new();
+    state_codes.insert("KL", "Kerala");
+    state_codes.insert("MH", "Maharashtra");
+    println!(" = {:?}", state_codes);
+    println!("Size of  is {}", state_codes.len());
+    for (key, val) in state_codes.iter() {
+        println!("{}: {}", key, val);
+    }
+    match state_codes.get(&"KL") {
+        Some(value) => {
+            println!("Value for key KL is {}", value);
+        }
+        None => {
+            println!("nothing found");
+        }
+    }
+    if state_codes.contains_key(&"MH") {
+        println!("found key MH");
+    }
+    println!("===============================");
+
+    // HashSet
+    println!("HashSet......");
+    let mut nums = HashSet::new();
+    nums.insert(1);
+    nums.insert(2);
+    nums.insert(3);
+    nums.insert(1);
+    println!("nums = {:?}, length of nums = {}", nums, nums.len());
+    for num in nums.iter() {
+        println!("{}", num);
+    }
+    if nums.contains(&1) {
+        println!("found 1");
+    }
+    nums.remove(&2);
+    println!("After remove 2, nums = {:?}", nums);
+    match nums.get(&2) {
+        Some(value) => {
+            println!("found {}", value);
+        }
+        None => {
+            println!("not found 2");
+        }
+    }
+    println!("===============================");
+
+    // error handling
+    /*
+     use std::fs::File
+     let f = File::open("a.txt");
+     match f {
+        Ok(f) => {
+            println!("file found {:?}", f);
+        }
+        Err(e) => {
+            println!("file not found\n{:?}", e);
+        }
+     }
+     let f = File::open("a.txt").unwrap();
+     let f = File::open("a.txt").expect("File not able to open");
+    */
+
+    
 }
 
 fn mutate_num_to_zero_by_value(mut param_num: i32) {
@@ -215,9 +313,11 @@ fn update_array_by_reference(arr: &mut[i32; 3]) {
     println!("Inside update_array_by_reference, arr = {:?}", arr);
 }
 
+/*
 fn display(v:Vec<i32>) {
     println!("Inside display, v = {:?},", v);
 }
+*/
 
 fn return_value(v:Vec<i32>) -> Vec<i32> {
     v
