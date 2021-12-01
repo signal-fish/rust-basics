@@ -1,4 +1,5 @@
 use std::collections::{HashMap,HashSet};
+use std::io::Write;
 
 fn main() {
     // declare a variable
@@ -285,7 +286,52 @@ fn main() {
      let f = File::open("a.txt").expect("File not able to open");
     */
 
-    
+    // Generic types
+    println!("Generic types......");
+    let t:Data<i32> = Data{value:350};
+    println!("value is of t {}", t.value);
+    let t2:Data<String> = Data{value: "Signal".to_string()};
+    println!("value of t2 is {}", t2.value);
+    println!("===============================");
+
+    // traits
+    println!("traits......");
+    let book1 = Book {
+        id: 1001,
+        name: "Rust in Action"
+    };
+    book1.print();
+    println!("===============================");
+
+    // Reading from the console
+    println!("Reading from the console......");
+    let mut line = String::new();
+    println!("Enter your name:");
+    let b1 = std::io::stdin().read_line(&mut line).unwrap();
+    println!("Hello, {}", line);
+    println!("Number of bytes read, {}", b1);
+    println!("===============================");
+
+    // Write Trait
+    // println!("Write Traits......");
+    let b1 = std::io::stdout().write("Rust Rocks\n".as_bytes()).unwrap();
+    let b2 = std::io::stdout().write(String::from("Rust is awesome\n").as_bytes()).unwrap();
+    std::io::stdout().write(format!("\nbytes written {}\n", (b1+b2)).as_bytes()).unwrap();
+    println!("===============================");
+
+    // Command Line Arguments
+    println!("Command Line Argument......"); 
+    let cmd_line = std::env::args();
+    println!("No of elements in arguments is {}", cmd_line.len());
+    for arg in cmd_line {
+        println!("[{}]", arg);
+    }
+    println!("===============================");
+    println!("===============================");
+    println!("===============================");
+    println!("===============================");
+    println!("===============================");
+
 }
 
 fn mutate_num_to_zero_by_value(mut param_num: i32) {
@@ -382,5 +428,24 @@ fn is_even(num:i32) -> Option<bool> {
         Some(true)
     } else {
         None
+    }
+}
+
+struct Data<T> {
+    value: T,
+}
+
+struct Book {
+    name: &'static str,
+    id: u32
+}
+
+trait Printable {
+    fn print(&self);
+}
+
+impl Printable for Book {
+    fn print(&self) {
+        println!("Printing book with id {} and name {}", self.id, self.name);
     }
 }
