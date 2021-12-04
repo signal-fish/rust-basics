@@ -1,5 +1,6 @@
 use std::collections::{HashMap,HashSet};
-use std::io::Write;
+use std::io::{Write, Read};
+use std::fs::{self, OpenOptions};
 
 fn main() {
     // declare a variable
@@ -305,12 +306,14 @@ fn main() {
 
     // Reading from the console
     println!("Reading from the console......");
+    /*
     let mut line = String::new();
     println!("Enter your name:");
     let b1 = std::io::stdin().read_line(&mut line).unwrap();
     println!("Hello, {}", line);
     println!("Number of bytes read, {}", b1);
     println!("===============================");
+    */
 
     // Write Trait
     // println!("Write Traits......");
@@ -327,11 +330,53 @@ fn main() {
         println!("[{}]", arg);
     }
     println!("===============================");
+
+    // Write to a file
+    println!("Write to a file......");
+    let mut file = std::fs::File::create("data.txt").expect("create failed");
+    file.write_all("Hello World".as_bytes()).expect("write failed");
+    file.write_all("\nRust Rocks\n".as_bytes()).expect("write failed");
+    println!("data written to file");
     println!("===============================");
-    println!("===============================");
-    println!("===============================");
+    
+    // Read from a file
+    println!("Read from a file......");
+    let mut file = std::fs::File::open("data.txt").unwrap();
+    let mut contents = String::new();
+    file.read_to_string(&mut contents).unwrap();
+    println!("{}", contents);
     println!("===============================");
 
+    // Append data to a file
+    println!("Append data to a file......");
+    let mut file = OpenOptions::new().append(true).open("data.txt").expect("cannot open file");
+    file.write_all("Hello World".as_bytes()).expect("write failed");
+    file.write_all("\nRust Rocks\n".as_bytes()).expect("write failed");
+    println!("file append success");
+    println!("===============================");
+
+    // Copy a file
+    println!("Copy a file......");
+    let mut command_line: std::env::Args = std::env::args();
+    command_line.next().unwrap();
+    let source = command_line.next().unwrap();
+    let destination = command_line.next().unwrap();
+    let mut file_in = std::fs::File::open(source).unwrap();
+    let mut file_out = std::fs::File::create(destination).unwrap();
+    let mut buffer = [0u8; 4096];
+    loop {
+        let nbytes = file_in.read(&mut buffer).unwrap();
+        file_out.write(&buffer[..nbytes]).unwrap();
+        if nbytes < buffer.len() {
+            break;
+        }
+    }
+
+    // Delete a file
+    println!("Delete a file......");
+    fs::remove_file("data.txt").expect("could not remove file");
+    println!("file is removed");
+    println!("===============================");
 }
 
 fn mutate_num_to_zero_by_value(mut param_num: i32) {
